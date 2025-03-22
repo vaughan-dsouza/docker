@@ -8,6 +8,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - mongo-data:/data/db
 
   mongo-express:
     image: mongo-express
@@ -20,4 +22,15 @@ services:
       ME_CONFIG_MONGODB_SERVER: mongodb
     depends_on:
       - mongodb
+
+  node-app:
+    image: node-app:1.0
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo-express
+
+volumes:
+  mongo-data:
+    driver: local
 # command to start -> docker-compose -f mongo-docker-compose.yaml up
